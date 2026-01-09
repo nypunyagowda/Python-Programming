@@ -23,5 +23,5 @@ This repository contains Python assignments, examples, and data manipulation exe
 ## 🎯 Get Started
 
 ```bash
-git clone https://github.com/Vaibhav-S-Gowda/Python-Programming.git
+git clone https://github.com/nypunyagowda/Python-Programming.git
 cd repo
