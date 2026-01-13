@@ -1,11 +1,43 @@
-def rotate_matrix(mat):
-    n = len(mat)
+import gspread
+from google.oauth2.service_account import Credentials
+from collections import Counter
+# Use the downloaded key file
+SERVICE_ACCOUNT_FILE = "service_account.json"
 
-    # Step 1: Transpose the matrix
-    for i in range(n - 1):
-        for j in range(i + 1, n):
-            mat[i][j], mat[j][i] = mat[j][i], mat[i][j]
+# Use the Google Sheet URL
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1Ziu2ta5K1YLE_XYzE0kuZqjLR67sdcb7ICGQWQS4pzA/edit?usp=sharing"
 
-    # Step 2: Reverse each row
-    for i in range(n):
-        mat[i].reverse()
+# Identify the sheet tab to read
+WORKSHEET_NAME = "Sheet1"
+SCOPES = [
+    "https://www.ggogleapis.com/auth/spreadsheets.readonly",
+    "https://www.googleapis.com/auth/drive.readonly",
+]
+def get_channel_preferences():
+    creds = Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes = SCOPES)
+    client = gspread.authorize(creds)
+    spreadsheet = client.open_by_url(SHEET_URL)
+    ws = spreadsheet.worksheet(WORKSHEET_NAME)
+    rows = ws.get_all_values()
+    if not rows:
+        raise RuntimeError("No data was found in the sheet.")
+header = rows[0]
+data_rows = rows[1:]
+if "ChannelPreferences" not in header:
+    raise RuntimeError("column 'ChannelPreference' was not found in the header row.")
+idx = header.index("ChannelPreference")
+prefs = [] 
+for r in data_rows:
+    if len(r) > idx:
+        val = r[idx].strip()
+        if val != "":
+            prefs.append(val)
+    counts = Counter(prefs)
+    print("ChannelPreference values")
+    for p in prefs:
+        print(p)
+    print("\nChannelPreference counts")
+    for k, v in counts.most_common():
+        print(f"{k}: {v}")
+return prefs, counts   
