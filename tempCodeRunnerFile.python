@@ -1,3 +1,0 @@
-cities = ["blr","mlr","ckm","mys"]
-for city in cities:
-    print(city)
