@@ -1,16 +1,29 @@
-import pickle
+import random
 
-class Person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+secret_number = random.randint(1, 10)
+max_guesses = 3
+guesses = 0
 
-person = Person("Aryaman", 25)
+print("🎮 Welcome to the Number Guessing Game!")
+print("You have only 3 guesses.")
+print("Guess a number between 1 and 10.")
 
-with open("person.pkl", "wb") as f:
-    pickle.dump(person, f)
+while guesses < max_guesses:
+    guess = int(input("Enter your guess: "))
+    guesses += 1
 
-with open("person.pkl", "rb") as f:
-    loaded_person = pickle.load(f)
+    if guess == secret_number:
+        print("🎉 Congratulations! You guessed it right.")
+        break
+    elif guess < secret_number:
+        print("Too low!")
+    else:
+        print("Too high!")
 
-print(loaded_person.name, loaded_person.age)
+    remaining = max_guesses - guesses
+    if remaining > 0:
+        print("Guesses left:", remaining)
+
+if guesses == max_guesses and guess != secret_number:
+    print("❌ Game Over!")
+    print("The correct number was:", secret_number)
