@@ -1,9 +1,15 @@
-d = {"Alice":84, "Bob":74,"Carol":92}
-for marks in d.items():
-    print(marks)
-for marks in d.keys():
-    print(marks)
-for marks in d.values():
-    print(marks)
-for students , marks in d.items():
-    print(f"{students} - {marks}") 
+class Database:
+    def __init__(self):
+    
+        self.__storage = {}
+    def write(self,key,value):
+        self.__storage[key] = value
+    def read(self,key):
+        if key in self.__storage:
+            print(self.__storage[key])
+        else:
+            print("DB item not available")
+db = Database()
+db.write("name","Alice")
+db.read("name")
+ 
